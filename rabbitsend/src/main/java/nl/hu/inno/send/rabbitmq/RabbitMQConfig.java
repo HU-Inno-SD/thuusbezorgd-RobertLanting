@@ -3,6 +3,7 @@ package nl.hu.inno.send.rabbitmq;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,11 @@ public class RabbitMQConfig {
         return new Queue(jsonQueue);
     }
 
+    @Bean
+    public Queue replyQueue(){
+        return new Queue("replyQueue");
+    }
+
     // spring bean for rabbitmq exchange
     @Bean
     public TopicExchange exchange(){
@@ -43,14 +49,32 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Binding replyBinding(){
+        return BindingBuilder
+                .bind(replyQueue())
+                .to(exchange())
+                .with("replyQueue");
+    }
+
+    @Bean
     public MessageConverter converter(){
         return new Jackson2JsonMessageConverter();
     }
 
     @Bean
-    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory){
+    public RabbitTemplate amqpTemplate(ConnectionFactory connectionFactory){
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(converter());
+        rabbitTemplate.setUseDirectReplyToContainer(false);
         return rabbitTemplate;
+    }
+
+    @Bean
+    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames("replyQueue");
+        container.setMessageListener(amqpTemplate(connectionFactory));
+        return container;
     }
 }

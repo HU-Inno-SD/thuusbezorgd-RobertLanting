@@ -12,34 +12,84 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${rabbitmq.queue.name}")
-    private String jsonQueue;
-
     @Value("${rabbitmq.exchange.name}")
     private String exchange;
 
-    @Value("${rabbitmq.routing.key}")
-    private String routingJsonKey;
-
-    // spring bean for queue (store json messages)
-    @Bean
-    public Queue jsonQueue(){
-        return new Queue(jsonQueue);
-    }
-
-    // spring bean for rabbitmq exchange
     @Bean
     public TopicExchange exchange(){
         return new TopicExchange(exchange);
     }
 
-    // binding between json queue and exchange using routing key
+    @Value("q.order-ingredients")
+    private String ingredientsQueue;
+    @Value("order.ingredients")
+    private String ingredientsKey;
+
     @Bean
-    public Binding jsonBinding(){
+    public Queue ingredientQueue(){
+        return new Queue(ingredientsQueue);
+    }
+    @Bean
+    public Binding ingredientBinding(){
         return BindingBuilder
-                .bind(jsonQueue())
+                .bind(ingredientQueue())
                 .to(exchange())
-                .with(routingJsonKey);
+                .with(ingredientsKey);
+    }
+
+    @Value("q.order-cancelled")
+    private String cancelledQueue;
+    @Value("order.cancelled")
+    private String cancelledKey;
+
+    @Bean
+    public Queue cancelledQueue(){
+        return new Queue(cancelledQueue);
+    }
+    @Bean
+    public Binding cancelledBinding(){
+        return BindingBuilder
+                .bind(cancelledQueue())
+                .to(exchange())
+                .with(cancelledKey);
+    }
+
+    @Value("q.order-confirmed")
+    private String confirmedQueue;
+
+    @Value("order.confirmed")
+    private String confirmedKey;
+
+    @Bean
+    public Queue confirmedQueue(){
+        return new Queue(confirmedQueue);
+    }
+
+    @Bean
+    public Binding confirmedBinding(){
+        return BindingBuilder
+                .bind(confirmedQueue())
+                .to(exchange())
+                .with(confirmedKey);
+    }
+
+    @Value("q.order-dish-confirmed")
+    private String dishConfirmedQueue;
+
+    @Value("order.dish.confirmed")
+    private String dishConfirmedKey;
+
+    @Bean
+    public Queue dishConfirmedQueue(){
+        return new Queue(dishConfirmedQueue);
+    }
+
+    @Bean
+    public Binding dishConfirmedBinding(){
+        return BindingBuilder
+                .bind(dishConfirmedQueue())
+                .to(exchange())
+                .with(dishConfirmedKey);
     }
 
     @Bean

@@ -4,7 +4,9 @@ import nl.hu.inno.send.TestObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +29,11 @@ public class RabbitMQJsonProducer {
     public void sendJsonMessage(TestObject testObject) {
         LOGGER.info(String.format("Json message sent -> %s", testObject.toString()));
         rabbitTemplate.convertAndSend(exchange, routingJsonKey, testObject);
+    }
+
+    public Object sendobject(Object object, Class<?> objectreturn, String routingKey) {
+        LOGGER.info(String.format("Json message sent -> %s", object.toString()));
+        return rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey,object, ParameterizedTypeReference.forType(objectreturn));
     }
 
 }

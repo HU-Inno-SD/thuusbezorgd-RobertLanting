@@ -9,7 +9,9 @@ public class OrderDTO {
     private UUID id;
     private String date;
     private String adres;
-    private List<Map<UUID, Integer>> dishes ;
+    private List<OrderDishDTO> dishes ;
+
+    private String status;
 
     public String getDate() {
         return date;
@@ -19,11 +21,19 @@ public class OrderDTO {
         return adres;
     }
 
-    public List<Map<UUID, Integer>> getDishes() {
+    public List<OrderDishDTO> getDishes() {
         return dishes;
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public Object getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

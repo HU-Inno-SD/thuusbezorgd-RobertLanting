@@ -3,6 +3,7 @@ package nl.hu.inno.order.application;
 import nl.hu.inno.order.data.OrderRepository;
 import nl.hu.inno.order.domain.Order;
 import nl.hu.inno.order.domain.OrderStatus;
+import nl.hu.inno.order.presentation.receiveDTO.DishListDTO;
 import nl.hu.inno.order.presentation.sendDTO.OrderDTO;
 import nl.hu.inno.order.rabbitmq.RabbitMQJsonProducer;
 import org.springframework.stereotype.Service;
@@ -35,28 +36,50 @@ public class OrderService {
         return orderRepository.findById(id).orElse(null);
     }
 
-    public void deleteOrder(UUID id) {
-        orderRepository.deleteById(id);
+    public void deleteOrder(String id) {
+        orderRepository.deleteById(UUID.fromString(id));
     }
 
-    public void addDish(String id, String dishid, int amount) {
-        Order order = orderRepository.findById(UUID.fromString(id)).orElse(null);
+    public void addDish(UUID orderid, UUID dishid) {
+        Order order = orderRepository.findById(orderid).orElse(null);
         if (order != null) {
-            order.addDish(UUID.fromString(dishid), amount);
+            if (order.getDishes().stream().anyMatch(d -> d.getDish().equals(dishid))) {
+                order.getDishes().stream().filter(d -> d.getDish().equals(dishid)).forEach(d -> d.setAmount(d.getAmount() + 1));
+            } else {
+                order.addDish(dishid,1);
+            }
             orderRepository.save(order);
+        } else {
+            System.out.println("Order not found");
         }
     }
 
-    public void cancelOrder(UUID id) {
-        Order order = orderRepository.findById(id).orElse(null);
+    public void dishExists(String dishid, String orderid) {
+        Order order = orderRepository.findById(UUID.fromString(orderid)).orElse(null);
+        if (order != null) {
+            jsonProducer.checkDish(UUID.fromString(dishid), UUID.fromString(orderid));
+        } else {
+            System.out.println("Order not found");
+        }
+    }
+
+
+
+    public void cancelOrder(UUID orderid) {
+        Order order = orderRepository.findById(orderid).orElse(null);
         if (order != null) {
             order.setStatus(OrderStatus.CANCELLED);
             orderRepository.save(order);
         }
     }
 
-    public void placeOrder(String id) {
-        jsonProducer.send(new OrderDTO(getOrder(UUID.fromString(id))), "menu");
+    public void checkDishes(String id) {
+        Order order = orderRepository.findById(UUID.fromString(id)).orElse(null);
+        if (order != null) {
+            jsonProducer.checkOrder(order);
+        } else {
+            System.out.println("Order not found");
+        }
     }
 }
 

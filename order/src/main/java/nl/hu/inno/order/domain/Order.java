@@ -8,7 +8,7 @@ public class Order {
     private UUID id;
     private LocalDateTime date;
     private String adres;
-    private List<Map<UUID, Integer>> dishes ;
+    private List<OrderDish> dishes ;
 
     private OrderStatus status;
 
@@ -28,7 +28,7 @@ public class Order {
         return adres;
     }
 
-    public List<Map<UUID, Integer>> getDishes() {
+    public List<OrderDish> getDishes() {
         return dishes;
     }
 
@@ -37,13 +37,13 @@ public class Order {
     }
 
     public void addDish(UUID dish, int amount) {
-        for (Map<UUID, Integer> dishMap : dishes) {
-            if (dishMap.containsKey(dish)) {
-                dishMap.put(dish, dishMap.get(dish) + amount);
+        for (OrderDish d : dishes) {
+            if (d.getDish().equals(dish)) {
+                d.setAmount(d.getAmount() + amount);
                 return;
             }
         }
-        dishes.add(Map.of(dish, amount));
+        dishes.add(new OrderDish(dish, amount));
     }
 
     public void setStatus(OrderStatus status) {

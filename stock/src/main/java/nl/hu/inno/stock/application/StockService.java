@@ -2,6 +2,8 @@ package nl.hu.inno.stock.application;
 
 import nl.hu.inno.stock.data.StockRepository;
 import nl.hu.inno.stock.domain.Ingredient;
+import nl.hu.inno.stock.presentation.recieveDTO.IngredientDTO;
+import nl.hu.inno.stock.presentation.recieveDTO.IngredientListDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,10 +39,17 @@ public class StockService {
         stockRepository.saveAll(ingredients);
     }
 
-    public boolean ingredientInStock(Map<String, Integer> ingredient) {
-        return stockRepository.ingredientInStock(ingredient);
+    public boolean ingredientsInStock(IngredientListDTO ingredientsListDTO) {
+        for (IngredientDTO i : ingredientsListDTO.getIngredients()) {
+            Ingredient ingredient = stockRepository.findById(i.getName()).orElse(null);
+            if (ingredient == null) {
+                return false;
+            } else {
+                if (ingredient.getAmount() < i.getAmount()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
-
-
-
 }

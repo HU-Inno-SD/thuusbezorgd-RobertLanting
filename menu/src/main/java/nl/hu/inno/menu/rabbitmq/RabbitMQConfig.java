@@ -12,34 +12,52 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${rabbitmq.queue.name}")
-    private String jsonQueue;
 
     @Value("${rabbitmq.exchange.name}")
     private String exchange;
 
-    @Value("${rabbitmq.routing.key}")
-    private String routingMenuKey;
-
-    // spring bean for queue (store json messages)
-    @Bean
-    public Queue jsonQueue(){
-        return new Queue(jsonQueue);
-    }
-
-    // spring bean for rabbitmq exchange
     @Bean
     public TopicExchange exchange(){
         return new TopicExchange(exchange);
     }
 
-    // binding between json queue and exchange using routing key
+
+    @Value("q.menu-order-check")
+    private String checkQueue;
+
+    @Value("menu.order.check")
+    private String checkKey;
+
     @Bean
-    public Binding jsonBinding(){
+    public Queue checkQueue(){
+        return new Queue(checkQueue);
+    }
+
+    @Bean
+    public Binding checkBinding(){
         return BindingBuilder
-                .bind(jsonQueue())
+                .bind(checkQueue())
                 .to(exchange())
-                .with(routingMenuKey);
+                .with(checkKey);
+    }
+
+    @Value("q.menu-dish-check")
+    private String dishCheckQueue;
+
+    @Value("menu.dish.check")
+    private String dishCheckKey;
+
+    @Bean
+    public Queue dishCheckQueue(){
+        return new Queue(dishCheckQueue);
+    }
+
+    @Bean
+    public Binding dishCheckBinding(){
+        return BindingBuilder
+                .bind(dishCheckQueue())
+                .to(exchange())
+                .with(dishCheckKey);
     }
 
     @Bean

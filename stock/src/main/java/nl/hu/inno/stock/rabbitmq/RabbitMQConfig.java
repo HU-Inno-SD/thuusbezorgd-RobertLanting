@@ -12,34 +12,31 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${rabbitmq.queue.name}")
-    private String jsonQueue;
-
     @Value("${rabbitmq.exchange.name}")
     private String exchange;
 
-    @Value("${rabbitmq.routing.key}")
-    private String routingJsonKey;
-
-    // spring bean for queue (store json messages)
-    @Bean
-    public Queue jsonQueue(){
-        return new Queue(jsonQueue);
-    }
-
-    // spring bean for rabbitmq exchange
     @Bean
     public TopicExchange exchange(){
         return new TopicExchange(exchange);
     }
 
-    // binding between json queue and exchange using routing key
+    @Value("q.stock.check-ingredients")
+    private String checkQueue;
+
+    @Value("stock.check.ingredients")
+    private String checkKey;
+
     @Bean
-    public Binding jsonBinding(){
+    public Queue checkQueue(){
+        return new Queue(checkQueue);
+    }
+
+    @Bean
+    public Binding checkBinding(){
         return BindingBuilder
-                .bind(jsonQueue())
+                .bind(checkQueue())
                 .to(exchange())
-                .with(routingJsonKey);
+                .with(checkKey);
     }
 
     @Bean

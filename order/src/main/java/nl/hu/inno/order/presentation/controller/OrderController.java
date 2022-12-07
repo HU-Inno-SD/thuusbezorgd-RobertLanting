@@ -1,11 +1,8 @@
 package nl.hu.inno.order.presentation.controller;
 
 import nl.hu.inno.order.application.OrderService;
-import nl.hu.inno.order.presentation.dto.DishDTO;
 import nl.hu.inno.order.presentation.dto.OrdersDTO;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/order")
@@ -27,14 +24,20 @@ public class OrderController {
         orderService.createOrder(adres);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteOrder(@PathVariable String id) {
+        orderService.deleteOrder(id);
+    }
+
     @PostMapping("/addDish/{id}")
-    public void addDish(@PathVariable String id, @RequestBody DishDTO dish) {
-        orderService.addDish(id, dish.id, dish.amount);
+    public void addDish(@PathVariable String id, @RequestBody String dishid) {
+        orderService.dishExists(dishid, id);
     }
 
     @PostMapping("/place/{id}")
     public void placeOrder(@PathVariable String id) {
-        orderService.placeOrder(id);
+        orderService.checkDishes(id);
+
     }
 
 }

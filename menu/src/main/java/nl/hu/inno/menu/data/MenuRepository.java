@@ -8,7 +8,4 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface MenuRepository extends MongoRepository<Dish, UUID> {
-
-    Map<String, Integer>[] getAmountIngredientsFromDishes(List<Map<UUID, Integer>> dishes);
-
 }

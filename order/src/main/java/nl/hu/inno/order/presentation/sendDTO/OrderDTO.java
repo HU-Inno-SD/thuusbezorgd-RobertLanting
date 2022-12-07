@@ -1,6 +1,7 @@
 package nl.hu.inno.order.presentation.sendDTO;
 
 import nl.hu.inno.order.domain.Order;
+import nl.hu.inno.order.domain.OrderDish;
 import nl.hu.inno.order.domain.OrderStatus;
 
 import java.time.LocalDateTime;
@@ -14,15 +15,19 @@ public class OrderDTO {
     private UUID id;
     private String date;
     private String adres;
-    private List<Map<UUID, Integer>> dishes ;
+    private List<OrderDishDTO> dishes ;
 
-    private OrderStatus status;
+    private String status;
 
     public OrderDTO(Order order) {
         this.id = order.getId();
         this.date = order.getDate().toString();
         this.adres = order.getAdres();
-        this.dishes = order.getDishes();
+        this.dishes = new ArrayList<>();
+        for (OrderDish orderDish : order.getDishes()) {
+            this.dishes.add(new OrderDishDTO(orderDish.getDish(), orderDish.getAmount()));
+        }
+        this.status = String.valueOf(order.getStatus());
     }
 
     public String getDate() {
@@ -33,7 +38,7 @@ public class OrderDTO {
         return adres;
     }
 
-    public List<Map<UUID, Integer>> getDishes() {
+    public List<OrderDishDTO> getDishes() {
         return dishes;
     }
 

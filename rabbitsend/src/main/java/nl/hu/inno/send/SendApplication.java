@@ -1,11 +1,12 @@
-package nl.hu.inno.recieve;
+package nl.hu.inno.send;
+
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OrdersApplication {
+public class SendApplication {
     public static void main(String[] args) {
-        SpringApplication.run(OrdersApplication.class, args);
+        SpringApplication.run(SendApplication.class, args);
     }
 }
