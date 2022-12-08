@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/stock")
 public class StockController {
 
-    private StockService stockService;
+    private final StockService stockService;
 
     public StockController(StockService stockService) {
         this.stockService = stockService;
@@ -24,17 +24,12 @@ public class StockController {
 
     @PostMapping("/add")
     public void addIngredient(@RequestBody IngredientDTO ingredient) {
-        stockService.addIngredient(new Ingredient(ingredient.name, ingredient.amount));
+        stockService.addIngredient(new Ingredient(ingredient.id, ingredient.amount));
     }
 
     @DeleteMapping("/delete/{id}")
     public void deleteIngredient(@PathVariable String id) {
         stockService.deleteIngredient(id);
     }
-
-//    @GetMapping("/inStock/{id}/{amount}")
-//    public boolean ingredientInStock(@PathVariable String id, @PathVariable int amount) {
-//        return stockService.ingredientInStock(id , amount);
-//    }
 
 }

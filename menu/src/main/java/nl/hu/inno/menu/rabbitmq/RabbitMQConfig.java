@@ -22,42 +22,23 @@ public class RabbitMQConfig {
     }
 
 
-    @Value("q.menu-order-check")
-    private String checkQueue;
+    @Value("q.get-menu")
+    private String menuQueue;
 
-    @Value("menu.order.check")
-    private String checkKey;
+    @Value("menu.get")
+    private String menuKey;
 
     @Bean
-    public Queue checkQueue(){
-        return new Queue(checkQueue);
+    public Queue menuQueue(){
+        return new Queue(menuQueue);
     }
 
     @Bean
     public Binding checkBinding(){
         return BindingBuilder
-                .bind(checkQueue())
+                .bind(menuQueue())
                 .to(exchange())
-                .with(checkKey);
-    }
-
-    @Value("q.menu-dish-check")
-    private String dishCheckQueue;
-
-    @Value("menu.dish.check")
-    private String dishCheckKey;
-
-    @Bean
-    public Queue dishCheckQueue(){
-        return new Queue(dishCheckQueue);
-    }
-
-    @Bean
-    public Binding dishCheckBinding(){
-        return BindingBuilder
-                .bind(dishCheckQueue())
-                .to(exchange())
-                .with(dishCheckKey);
+                .with(menuKey);
     }
 
     @Bean

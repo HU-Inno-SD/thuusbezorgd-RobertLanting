@@ -20,23 +20,42 @@ public class RabbitMQConfig {
         return new TopicExchange(exchange);
     }
 
-    @Value("q.stock.check-ingredients")
-    private String checkQueue;
+    @Value("q.get-stock")
+    private String stockQueue;
 
-    @Value("stock.check.ingredients")
-    private String checkKey;
+    @Value("stock.get")
+    private String stockKey;
 
     @Bean
-    public Queue checkQueue(){
-        return new Queue(checkQueue);
+    public Queue stockQueue(){
+        return new Queue(stockQueue);
     }
 
     @Bean
-    public Binding checkBinding(){
+    public Binding stockBinding(){
         return BindingBuilder
-                .bind(checkQueue())
+                .bind(stockQueue())
                 .to(exchange())
-                .with(checkKey);
+                .with(stockKey);
+    }
+
+    @Value("q.stock-take-ingredients")
+    private String ingredientsQueue;
+
+    @Value("stock.take.ingredients")
+    private String ingredientsKey;
+
+    @Bean
+    public Queue ingredientsQueue(){
+        return new Queue(ingredientsQueue);
+    }
+
+    @Bean
+    public Binding ingredientBinding(){
+        return BindingBuilder
+                .bind(ingredientsQueue())
+                .to(exchange())
+                .with(ingredientsKey);
     }
 
     @Bean

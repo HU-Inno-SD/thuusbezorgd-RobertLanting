@@ -1,7 +1,10 @@
 package nl.hu.inno.order.domain;
 
 public enum OrderStatus {
-    PENDING,
+
+    CREATED,
+    VERIFYING_DISHES,
+    GETTING_INGREDIENTS,
     CANCELLED,
     PLACED
 }

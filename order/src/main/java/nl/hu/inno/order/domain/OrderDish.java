@@ -17,10 +17,6 @@ public class OrderDish {
         return dish;
     }
 
-    public void setDish(UUID dish) {
-        this.dish = dish;
-    }
-
     public int getAmount() {
         return amount;
     }

@@ -1,55 +1,46 @@
 package nl.hu.inno.stock.application;
 
-import nl.hu.inno.stock.data.StockRepository;
+import nl.hu.inno.stock.presentation.dto.IngredientDTO;
+import nl.hu.inno.stock.presentation.dto.IngredientListDTO;
+import nl.hu.inno.stock.presentation.dto.StockDTO;
+import nl.hu.inno.stock.rabbitmq.RabbitMQJsonProducer;
+import nl.hu.inno.stock.repo.StockRepository;
 import nl.hu.inno.stock.domain.Ingredient;
-import nl.hu.inno.stock.presentation.recieveDTO.IngredientDTO;
-import nl.hu.inno.stock.presentation.recieveDTO.IngredientListDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class StockService {
 
-    private StockRepository stockRepository;
+    private final StockRepository stockRepository;
 
-    public StockService(StockRepository stockRepository) {
+    private final RabbitMQJsonProducer jsonProducer;
+
+    public StockService(StockRepository stockRepository, RabbitMQJsonProducer jsonProducer) {
         this.stockRepository = stockRepository;
+        this.jsonProducer = jsonProducer;
     }
 
     public void addIngredient(Ingredient ingredient) {
         stockRepository.save(ingredient);
+        jsonProducer.updateStock(new StockDTO(stockRepository.findAll()));
     }
 
     public void deleteIngredient(String name) {
         stockRepository.deleteById(name);
-    }
-
-    public Ingredient getIngredient(String id) {
-        return stockRepository.findById(id).orElse(null);
+        jsonProducer.updateStock(new StockDTO(stockRepository.findAll()));
     }
 
     public List<Ingredient> getIngredients() {
         return stockRepository.findAll();
     }
 
-    public void addIngredients(List<Ingredient> ingredients) {
-        stockRepository.saveAll(ingredients);
-    }
-
-    public boolean ingredientsInStock(IngredientListDTO ingredientsListDTO) {
+    public void takeIngredients(IngredientListDTO ingredientsListDTO) {
         for (IngredientDTO i : ingredientsListDTO.getIngredients()) {
-            Ingredient ingredient = stockRepository.findById(i.getName()).orElse(null);
-            if (ingredient == null) {
-                return false;
-            } else {
-                if (ingredient.getAmount() < i.getAmount()) {
-                    return false;
-                }
-            }
+            Ingredient ingredient = stockRepository.findById(i.getId()).get();
+            ingredient.setAmount(ingredient.getAmount() - i.getAmount());
+            stockRepository.save(ingredient);
         }
-        return true;
     }
 }

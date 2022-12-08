@@ -17,7 +17,7 @@ public class Order {
         this.adres = adres;
         this.id = UUID.randomUUID();
         this.dishes = new ArrayList<>();
-        this.status = OrderStatus.PENDING;
+        this.status = OrderStatus.CREATED;
     }
 
     public LocalDateTime getDate() {
@@ -36,14 +36,14 @@ public class Order {
         return id;
     }
 
-    public void addDish(UUID dish, int amount) {
+    public void addDish(UUID dish) {
         for (OrderDish d : dishes) {
             if (d.getDish().equals(dish)) {
-                d.setAmount(d.getAmount() + amount);
+                d.setAmount(d.getAmount() + 1);
                 return;
             }
         }
-        dishes.add(new OrderDish(dish, amount));
+        dishes.add(new OrderDish(dish, 1));
     }
 
     public void setStatus(OrderStatus status) {

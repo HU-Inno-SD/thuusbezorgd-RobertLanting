@@ -20,76 +20,38 @@ public class RabbitMQConfig {
         return new TopicExchange(exchange);
     }
 
-    @Value("q.order-ingredients")
-    private String ingredientsQueue;
-    @Value("order.ingredients")
-    private String ingredientsKey;
+    @Value("q.order-menu-update")
+    private String menuQueue;
+    @Value("order.menu.update")
+    private String menuKey;
 
     @Bean
-    public Queue ingredientQueue(){
-        return new Queue(ingredientsQueue);
+    public Queue menuQueue(){
+        return new Queue(menuQueue);
     }
     @Bean
     public Binding ingredientBinding(){
         return BindingBuilder
-                .bind(ingredientQueue())
+                .bind(menuQueue())
                 .to(exchange())
-                .with(ingredientsKey);
+                .with(menuKey);
     }
 
-    @Value("q.order-cancelled")
-    private String cancelledQueue;
-    @Value("order.cancelled")
-    private String cancelledKey;
+    @Value("q.order-stock-update")
+    private String stockQueue;
+    @Value("order.stock.update")
+    private String stockKey;
 
     @Bean
-    public Queue cancelledQueue(){
-        return new Queue(cancelledQueue);
+    public Queue stockQueue(){
+        return new Queue(stockQueue);
     }
     @Bean
     public Binding cancelledBinding(){
         return BindingBuilder
-                .bind(cancelledQueue())
+                .bind(stockQueue())
                 .to(exchange())
-                .with(cancelledKey);
-    }
-
-    @Value("q.order-confirmed")
-    private String confirmedQueue;
-
-    @Value("order.confirmed")
-    private String confirmedKey;
-
-    @Bean
-    public Queue confirmedQueue(){
-        return new Queue(confirmedQueue);
-    }
-
-    @Bean
-    public Binding confirmedBinding(){
-        return BindingBuilder
-                .bind(confirmedQueue())
-                .to(exchange())
-                .with(confirmedKey);
-    }
-
-    @Value("q.order-dish-confirmed")
-    private String dishConfirmedQueue;
-
-    @Value("order.dish.confirmed")
-    private String dishConfirmedKey;
-
-    @Bean
-    public Queue dishConfirmedQueue(){
-        return new Queue(dishConfirmedQueue);
-    }
-
-    @Bean
-    public Binding dishConfirmedBinding(){
-        return BindingBuilder
-                .bind(dishConfirmedQueue())
-                .to(exchange())
-                .with(dishConfirmedKey);
+                .with(stockKey);
     }
 
     @Bean

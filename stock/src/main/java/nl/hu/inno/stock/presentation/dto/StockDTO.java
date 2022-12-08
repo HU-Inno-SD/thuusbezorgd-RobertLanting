@@ -2,17 +2,21 @@ package nl.hu.inno.stock.presentation.dto;
 
 import nl.hu.inno.stock.domain.Ingredient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StockDTO {
 
-    public List<Ingredient> ingredients;
+    public List<IngredientDTO> stock;
 
     public StockDTO(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+        this.stock = new ArrayList<>();
+        for (Ingredient ingredient : ingredients) {
+            this.stock.add(new IngredientDTO(ingredient));
+        }
     }
 
-    public List<Ingredient> getIngredients() {
-        return ingredients;
+    public List<IngredientDTO> getStock() {
+        return stock;
     }
 }

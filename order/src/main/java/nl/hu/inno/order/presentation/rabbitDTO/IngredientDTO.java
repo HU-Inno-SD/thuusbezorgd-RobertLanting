@@ -1,14 +1,16 @@
-package nl.hu.inno.stock.domain;
+package nl.hu.inno.order.presentation.rabbitDTO;
 
-import java.util.UUID;
-
-public class Ingredient {
+public class IngredientDTO {
 
     private String id;
+
     private int amount;
 
-    public Ingredient(String id, int amount) {
-        this.id = id;
+    public IngredientDTO() {
+    }
+
+    public IngredientDTO(String name, int amount) {
+        this.id = name;
         this.amount = amount;
     }
 
@@ -16,8 +18,8 @@ public class Ingredient {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String name) {
+        this.id = name;
     }
 
     public int getAmount() {
