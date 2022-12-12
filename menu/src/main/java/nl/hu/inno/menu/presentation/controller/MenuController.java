@@ -2,9 +2,12 @@ package nl.hu.inno.menu.presentation.controller;
 
 import nl.hu.inno.menu.application.MenuService;
 import nl.hu.inno.menu.domain.Dish;
+import nl.hu.inno.menu.domain.exception.DishNotFoundException;
 import nl.hu.inno.menu.presentation.dto.DishDTO;
 import nl.hu.inno.menu.presentation.dto.MenuDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -23,14 +26,18 @@ public class MenuController {
         return new MenuDTO(service.getMenu());
     }
 
-    @PostMapping("/add")
+    @PostMapping("")
     public void addDish(@RequestBody DishDTO dish) {
         service.addDish(new Dish(dish.name, dish.ingredients, dish.vegetarian));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteDish(@PathVariable String id) {
-        service.deleteDish(UUID.fromString(id));
+        try {
+            service.deleteDish(UUID.fromString(id));
+        } catch (DishNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Dish not found with id: " + id);
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package nl.hu.inno.menu.application;
 
+import nl.hu.inno.menu.domain.exception.DishNotFoundException;
 import nl.hu.inno.menu.presentation.dto.MenuDTO;
 import nl.hu.inno.menu.repo.MenuRepository;
 import nl.hu.inno.menu.domain.Dish;
@@ -31,8 +32,12 @@ public class MenuService {
     }
 
     public void deleteDish(UUID id) {
-        menuRepository.deleteById(id);
-        jsonProducer.updateMenu(new MenuDTO(menuRepository.findAll()));
+        if (menuRepository.existsById(id)) {
+            menuRepository.deleteById(id);
+            jsonProducer.updateMenu(new MenuDTO(menuRepository.findAll()));
+        } else {
+            throw new DishNotFoundException("Dish with id " + id + " does not exist");
+        }
     }
 }
 

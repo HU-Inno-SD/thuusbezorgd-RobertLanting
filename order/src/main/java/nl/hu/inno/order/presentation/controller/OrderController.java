@@ -1,8 +1,7 @@
 package nl.hu.inno.order.presentation.controller;
 
 import nl.hu.inno.order.application.OrderService;
-import nl.hu.inno.order.domain.exception.DishDoesntExistException;
-import nl.hu.inno.order.domain.exception.OrderDoesntExistException;
+import nl.hu.inno.order.domain.exception.*;
 import nl.hu.inno.order.presentation.dto.OrdersDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,7 @@ public class OrderController {
         orderService.createOrder(adres);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteOrder(@PathVariable String id) {
         orderService.deleteOrder(id);
     }
@@ -59,6 +58,12 @@ public class OrderController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order doesn't exist", e);
         } catch (DishDoesntExistException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dish doesn't exist", e);
+        } catch (OrderAlreadyPlacedException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order is already placed", e);
+        } catch (OrderCancelledException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order is cancelled", e);
+        } catch (IngredientNotInStockException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ingredient not in stock", e);
         }
 
     }

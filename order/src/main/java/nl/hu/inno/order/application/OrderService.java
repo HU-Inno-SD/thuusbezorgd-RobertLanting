@@ -1,7 +1,7 @@
 package nl.hu.inno.order.application;
 
 import nl.hu.inno.order.domain.OrderDish;
-import nl.hu.inno.order.domain.exception.DishDoesntExistException;
+import nl.hu.inno.order.domain.exception.*;
 import nl.hu.inno.order.presentation.rabbitDTO.IngredientDTO;
 import nl.hu.inno.order.presentation.rabbitDTO.IngredientListDTO;
 import nl.hu.inno.order.presentation.rabbitDTO.MenuDTO;
@@ -9,7 +9,6 @@ import nl.hu.inno.order.presentation.rabbitDTO.StockDTO;
 import nl.hu.inno.order.repo.OrderRepository;
 import nl.hu.inno.order.domain.Order;
 import nl.hu.inno.order.domain.OrderStatus;
-import nl.hu.inno.order.domain.exception.OrderDoesntExistException;
 import nl.hu.inno.order.rabbitmq.RabbitMQJsonProducer;
 import org.springframework.stereotype.Service;
 
@@ -109,6 +108,12 @@ public class OrderService {
         if (order == null) {
             throw new OrderDoesntExistException("Order doesn't exist");
         }
+        if (order.getStatus() == OrderStatus.PLACED) {
+            throw new OrderAlreadyPlacedException("Order already placed");
+        }
+        if(order.getStatus() == OrderStatus.CANCELLED){
+            throw new OrderCancelledException("Order is cancelled");
+        }
         if (!checkIfDishesExist(orderRepository.findById(UUID.fromString(id)).get())) {
             throw new DishDoesntExistException("Dish doesn't exist");
         }
@@ -116,7 +121,11 @@ public class OrderService {
             takeingredientsFromStock(getIngredientsFromOrder(order));
             order.setStatus(OrderStatus.PLACED);
             orderRepository.save(order);
-        };
+        } else {
+            order.setStatus(OrderStatus.CANCELLED);
+            orderRepository.save(order);
+            throw new IngredientNotInStockException("Ingredients not in stock");
+        }
     }
 
     public void updateMenu(MenuDTO menuDTO) {

@@ -1,5 +1,6 @@
 package nl.hu.inno.stock.application;
 
+import nl.hu.inno.stock.domain.exception.IngredientNotFoundException;
 import nl.hu.inno.stock.presentation.dto.IngredientDTO;
 import nl.hu.inno.stock.presentation.dto.IngredientListDTO;
 import nl.hu.inno.stock.presentation.dto.StockDTO;
@@ -28,8 +29,12 @@ public class StockService {
     }
 
     public void deleteIngredient(String name) {
-        stockRepository.deleteById(name);
-        jsonProducer.updateStock(new StockDTO(stockRepository.findAll()));
+        if (stockRepository.existsById(name)) {
+            stockRepository.deleteById(name);
+            jsonProducer.updateStock(new StockDTO(stockRepository.findAll()));
+        } else {
+            throw new IngredientNotFoundException("Ingredient with name " + name + " does not exist");
+        }
     }
 
     public List<Ingredient> getIngredients() {
