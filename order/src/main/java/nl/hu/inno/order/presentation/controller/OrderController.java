@@ -22,7 +22,7 @@ public class OrderController {
         return new OrdersDTO(orderService.getOrders());
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public void createOrder(@RequestBody String adres) {
         orderService.createOrder(adres);
     }
@@ -32,7 +32,7 @@ public class OrderController {
         orderService.deleteOrder(id);
     }
 
-    @PostMapping("/addDish/{id}")
+    @PostMapping("/dish/{id}")
     public void addDish(@PathVariable String id, @RequestBody String dishid) {
         try {
             orderService.addDish(id, dishid);
@@ -41,7 +41,7 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/removeDish/{id}")
+    @DeleteMapping("/dish/{id}")
     public void removeDish(@PathVariable String id, @RequestBody String dishid) {
         try {
             orderService.removeDish(dishid, id);
@@ -50,7 +50,7 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/place/{id}")
+    @PostMapping("/{id}")
     public void placeOrder(@PathVariable String id) {
         try {
             orderService.placeOrder(id);
