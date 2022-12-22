@@ -1,10 +1,10 @@
 package nl.hu.inno.stock.application;
 
 import nl.hu.inno.stock.domain.exception.IngredientNotFoundException;
-import nl.hu.inno.stock.presentation.dto.IngredientDTO;
-import nl.hu.inno.stock.presentation.dto.IngredientListDTO;
-import nl.hu.inno.stock.presentation.dto.StockDTO;
-import nl.hu.inno.stock.rabbitmq.RabbitMQJsonProducer;
+import nl.hu.inno.stock.presentation.rabbitDTO.IngredientDTO;
+import nl.hu.inno.stock.presentation.rabbitDTO.IngredientListDTO;
+import nl.hu.inno.stock.presentation.rabbitDTO.StockDTO;
+import nl.hu.inno.stock.repo.RabbitMQJsonProducer;
 import nl.hu.inno.stock.repo.StockRepository;
 import nl.hu.inno.stock.domain.Ingredient;
 import org.springframework.stereotype.Service;

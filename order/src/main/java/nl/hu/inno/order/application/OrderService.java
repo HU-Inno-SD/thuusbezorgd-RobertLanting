@@ -9,7 +9,7 @@ import nl.hu.inno.order.presentation.rabbitDTO.StockDTO;
 import nl.hu.inno.order.repo.OrderRepository;
 import nl.hu.inno.order.domain.Order;
 import nl.hu.inno.order.domain.OrderStatus;
-import nl.hu.inno.order.rabbitmq.RabbitMQJsonProducer;
+import nl.hu.inno.order.repo.RabbitMQJsonProducer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

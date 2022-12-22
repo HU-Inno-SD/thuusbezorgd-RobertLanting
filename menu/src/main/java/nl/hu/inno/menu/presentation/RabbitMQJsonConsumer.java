@@ -1,6 +1,7 @@
-package nl.hu.inno.menu.rabbitmq;
+package nl.hu.inno.menu.presentation;
 
-import nl.hu.inno.menu.presentation.dto.MenuDTO;
+import nl.hu.inno.menu.presentation.rabbitDTO.MenuDTO;
+import nl.hu.inno.menu.repo.RabbitMQJsonProducer;
 import nl.hu.inno.menu.repo.MenuRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

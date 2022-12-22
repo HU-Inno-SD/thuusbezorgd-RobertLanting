@@ -1,13 +1,11 @@
-package nl.hu.inno.menu.rabbitmq;
+package nl.hu.inno.menu.repo;
 
-import nl.hu.inno.menu.presentation.dto.MenuDTO;
+import nl.hu.inno.menu.presentation.rabbitDTO.MenuDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class RabbitMQJsonProducer {

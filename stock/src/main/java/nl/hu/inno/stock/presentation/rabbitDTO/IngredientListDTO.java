@@ -1,4 +1,6 @@
-package nl.hu.inno.stock.presentation.dto;
+package nl.hu.inno.stock.presentation.rabbitDTO;
+
+import nl.hu.inno.stock.presentation.rabbitDTO.IngredientDTO;
 
 import java.util.List;
 

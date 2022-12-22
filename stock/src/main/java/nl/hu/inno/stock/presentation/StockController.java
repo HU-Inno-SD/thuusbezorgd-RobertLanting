@@ -1,4 +1,4 @@
-package nl.hu.inno.stock.presentation.controller;
+package nl.hu.inno.stock.presentation;
 
 
 import nl.hu.inno.stock.application.StockService;

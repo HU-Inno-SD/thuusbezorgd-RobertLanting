@@ -1,4 +1,4 @@
-package nl.hu.inno.order.rabbitmq;
+package nl.hu.inno.order.repo;
 
 import nl.hu.inno.order.presentation.rabbitDTO.IngredientListDTO;
 import org.slf4j.Logger;
@@ -6,8 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class RabbitMQJsonProducer {

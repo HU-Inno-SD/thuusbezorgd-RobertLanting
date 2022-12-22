@@ -1,19 +1,14 @@
-package nl.hu.inno.order.rabbitmq;
+package nl.hu.inno.order.presentation;
 
 import nl.hu.inno.order.application.OrderService;
 import nl.hu.inno.order.presentation.rabbitDTO.MenuDTO;
 import nl.hu.inno.order.presentation.rabbitDTO.StockDTO;
+import nl.hu.inno.order.repo.RabbitMQJsonProducer;
 import nl.hu.inno.order.repo.OrderRepository;
-import nl.hu.inno.order.domain.Order;
-import nl.hu.inno.order.domain.OrderStatus;
-import nl.hu.inno.order.presentation.rabbitDTO.IngredientListDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class RabbitMQJsonConsumer {

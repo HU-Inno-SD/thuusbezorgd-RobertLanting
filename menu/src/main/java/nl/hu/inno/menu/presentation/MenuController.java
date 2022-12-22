@@ -1,4 +1,4 @@
-package nl.hu.inno.menu.presentation.controller;
+package nl.hu.inno.menu.presentation;
 
 import nl.hu.inno.menu.application.MenuService;
 import nl.hu.inno.menu.domain.Dish;

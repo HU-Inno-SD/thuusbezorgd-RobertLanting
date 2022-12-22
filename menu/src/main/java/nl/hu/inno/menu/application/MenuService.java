@@ -1,10 +1,10 @@
 package nl.hu.inno.menu.application;
 
 import nl.hu.inno.menu.domain.exception.DishNotFoundException;
-import nl.hu.inno.menu.presentation.dto.MenuDTO;
+import nl.hu.inno.menu.presentation.rabbitDTO.MenuDTO;
 import nl.hu.inno.menu.repo.MenuRepository;
 import nl.hu.inno.menu.domain.Dish;
-import nl.hu.inno.menu.rabbitmq.RabbitMQJsonProducer;
+import nl.hu.inno.menu.repo.RabbitMQJsonProducer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

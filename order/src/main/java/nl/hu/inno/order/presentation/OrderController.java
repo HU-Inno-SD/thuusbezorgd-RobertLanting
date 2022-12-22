@@ -1,4 +1,4 @@
-package nl.hu.inno.order.presentation.controller;
+package nl.hu.inno.order.presentation;
 
 import nl.hu.inno.order.application.OrderService;
 import nl.hu.inno.order.domain.exception.*;
