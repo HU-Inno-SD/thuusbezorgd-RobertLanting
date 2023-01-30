@@ -14,7 +14,10 @@ public class Date {
     private void validateDate(LocalDateTime date) {
        if (date == null) {
             throw new IllegalArgumentException("Date cannot be null");
-        }
+       }
+       if (date.isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Date cannot be in the future");
+       }
     }
 
     public LocalDateTime get() {

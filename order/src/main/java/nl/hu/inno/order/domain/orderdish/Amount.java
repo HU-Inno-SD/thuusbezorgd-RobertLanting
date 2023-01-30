@@ -23,6 +23,9 @@ public class Amount {
         if (amount > 50) {
             throw new IllegalArgumentException("Amount cannot be above 50");
         }
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount cannot be below 0");
+        }
     }
 
     public int get() {
