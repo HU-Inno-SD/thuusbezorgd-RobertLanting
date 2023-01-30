@@ -1,4 +1,4 @@
-package nl.hu.inno.order.domain;
+package nl.hu.inno.order.domain.order;
 
 public enum OrderStatus {
 

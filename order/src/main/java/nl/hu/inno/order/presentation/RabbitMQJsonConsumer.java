@@ -1,6 +1,5 @@
 package nl.hu.inno.order.presentation;
 
-import nl.hu.inno.order.application.OrderService;
 import nl.hu.inno.order.presentation.rabbitDTO.MenuDTO;
 import nl.hu.inno.order.presentation.rabbitDTO.StockDTO;
 import nl.hu.inno.order.repo.RabbitMQJsonProducer;
@@ -18,23 +17,24 @@ public class RabbitMQJsonConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMQJsonConsumer.class);
 
     private OrderRepository orderRepository;
-    private OrderService orderService;
 
-    public RabbitMQJsonConsumer(OrderRepository orderRepository, OrderService orderService, RabbitMQJsonProducer jsonProducer) {
+    private OrderController orderController;
+
+    public RabbitMQJsonConsumer(OrderRepository orderRepository, RabbitMQJsonProducer jsonProducer, OrderController orderController) {
         this.orderRepository = orderRepository;
-        this.orderService = orderService;
         this.jsonProducer = jsonProducer;
+        this.orderController = orderController;
     }
 
     @RabbitListener(queues = {"q.order-menu-update"})
     public void consumeMenuUpdateMessage(MenuDTO menuDTO) {
         LOGGER.info(String.format("Received JSON message order on menu update q -> %s", menuDTO.toString()));
-        orderService.updateMenu(menuDTO);
+        orderController.updateMenu(menuDTO);
     }
 
     @RabbitListener(queues = {"q.order-stock-update"})
     public void consumeStockUpdateMessage(StockDTO stockDTO) {
         LOGGER.info(String.format("Received JSON message order on stock update q -> %s", stockDTO.toString()));
-        orderService.updateStock(stockDTO);
+        orderController.updateStock(stockDTO);
     }
 }
